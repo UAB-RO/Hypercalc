@@ -78,12 +78,6 @@
             background-color: #dff0d8;
         }
 
-        .predicted-toxicity-grade-1,
-        .predicted-toxicity-grade-2,
-        .predicted-toxicity-grade-3 {
-            background-color: #f2dede;
-        }
-
         .predicted-toxicity-grade-1 {
             background-color: #fcf8e3;
         }
@@ -95,20 +89,24 @@
         .predicted-toxicity-grade-3 {
             background-color: #f2b8b0;
         }
+
+        img {
+            display: block;
+            margin-bottom: 20px;
+            width: 150px;
+            height: auto;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="form-container">
+        <img src="https://avatars.githubusercontent.com/u/138029781?s=400&u=3ff51622bdb65495c62744b22f84b88692b483e2&v=4" alt="Brand Logo">
         <h1>UAB Hyperarc Toxicity Calculator</h1>
         <div class="input-group">
             <label for="volume">Target Volume</label>
-            <input type="text" id="volume" placeholder="cm3">
-        </div>
-        <div class="input-group">
-            <label for="surface-area">Target Surface Area</label>
-            <input type="text" id="surface-area" placeholder="cm2">
+            <input type="number" id="volume" placeholder="cm3" oninput="updateCalculations()">
         </div>
         <div class="input-group">
             <label for="diameter">Target Diameter</label>
@@ -125,46 +123,93 @@
                 <th>Detail</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="results-table">
             <tr>
                 <td>24Gy x 1</td>
-                <td class="predicted-toxicity-none">None</td>
-                <td>Predicted V12 is 4.5 cc</td>
+                <td id="toxicity-24"></td>
+                <td id="detail-24">Predicted V12 is 0 cc</td>
             </tr>
             <tr>
                 <td>20Gy x 1</td>
-                <td class="predicted-toxicity-grade-1">Grade 1</td>
-                <td>Predicted V12 is 4.5 cc</td>
+                <td id="toxicity-20"></td>
+                <td id="detail-20">Predicted V12 is 0 cc</td>
             </tr>
             <tr>
                 <td>18Gy x 1</td>
-                <td class="predicted-toxicity-grade-2">Grade 2</td>
-                <td>Predicted V12 is 4.5 cc</td>
+                <td id="toxicity-18"></td>
+                <td id="detail-18">Predicted V12 is 0 cc</td>
             </tr>
             <tr>
                 <td>16Gy x 1</td>
-                <td class="predicted-toxicity-grade-1">Grade 1</td>
-                <td>Predicted V12 is 4.5 cc</td>
+                <td id="toxicity-16"></td>
+                <td id="detail-16">Predicted V12 is 0 cc</td>
             </tr>
             <tr>
                 <td>15Gy x 1</td>
-                <td class="predicted-toxicity-none">None</td>
-                <td>Predicted V12 is 4.5 cc</td>
+                <td id="toxicity-15"></td>
+                <td id="detail-15">Predicted V12 is 0 cc</td>
             </tr>
             <tr>
                 <td>27Gy x 3</td>
-                <td class="predicted-toxicity-grade-3">Grade 3</td>
-                <td>Predicted V12 is 4.5 cc</td>
+                <td id="toxicity-27"></td>
+                <td id="detail-27">Predicted V19.6 is 0 cc</td>
             </tr>
             <tr>
                 <td>30Gy x 5</td>
-                <td class="predicted-toxicity-grade-1">Grade 1</td>
-                <td>Predicted V24.4 is 5.6 cc</td>
+                <td id="toxicity-30"></td>
+                <td id="detail-30">Predicted V24.4 is 0 cc</td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
+
+<script>
+    const fractionationData = [
+        { id: 24, factor: 4.6519, exponent: 0.8431, label: 'V12' },
+        { id: 20, factor: 3.4249, exponent: 0.8672, label: 'V12' },
+        { id: 18, factor: 2.8572, exponent: 0.8825, label: 'V12' },
+        { id: 27, factor: 2.4552, exponent: 0.8960, label: 'V19.6' },
+        { id: 16, factor: 2.3112, exponent: 0.9016, label: 'V12' },
+        { id: 15, factor: 2.0394, exponent: 0.9137, label: 'V12' },
+        { id: 30, factor: 1.9720, exponent: 0.9170, label: 'V24.4' }
+    ];
+
+    function calculateIDV(TV, factor, exponent) {
+        return factor * Math.pow(TV, exponent);
+    }
+
+    function updateCalculations() {
+        const TV = parseFloat(document.getElementById('volume').value);
+
+        if (isNaN(TV) || TV <= 0) {
+            // If Target Volume is not a valid number, clear the table
+            fractionationData.forEach(({ id }) => {
+                document.getElementById(`toxicity-${id}`).textContent = '';
+                document.getElementById(`detail-${id}`).textContent = 'Predicted V12 is 0 cc';
+            });
+            return;
+        }
+
+        fractionationData.forEach(({ id, factor, exponent, label }) => {
+            const IDV = calculateIDV(TV, factor, exponent).toFixed(2);
+            let toxicityLevel = '';
+
+            if (IDV > 20) {
+                toxicityLevel = 'Grade 3';
+            } else if (IDV > 10) {
+                toxicityLevel = 'Grade 2';
+            } else if (IDV > 5) {
+                toxicityLevel = 'Grade 1';
+            } else {
+                toxicityLevel = 'None';
+            }
+
+            document.getElementById(`toxicity-${id}`).textContent = toxicityLevel;
+            document.getElementById(`detail-${id}`).textContent = `Predicted ${label} is ${IDV} cc`;
+        });
+    }
+</script>
 
 </body>
 </html>
