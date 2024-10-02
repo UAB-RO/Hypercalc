@@ -1,215 +1,120 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UAB Hyperarc Toxicity Calculator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f9;
-        }
-
-        .container {
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-container {
-            margin-right: 20px;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        .input-group {
-            margin-bottom: 10px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 12px;
-            border: 1px solid #ccc;
-            text-align: center;
-        }
-
-        th {
-            background-color: #80aaff;
-            color: #fff;
-        }
-
-        td {
-            background-color: #e6f0ff;
-        }
-
-        .predicted-toxicity-none {
-            background-color: #dff0d8;
-        }
-
-        .predicted-toxicity-grade-1 {
-            background-color: #fcf8e3;
-        }
-
-        .predicted-toxicity-grade-2 {
-            background-color: #f7e5c0;
-        }
-
-        .predicted-toxicity-grade-3 {
-            background-color: #f2b8b0;
-        }
-
-        img {
-            display: block;
-            margin-bottom: 20px;
-            width: 150px;
-            height: auto;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="calc.js" defer></script>
 </head>
+
 <body>
-
-<div class="container">
-    <div class="form-container">
-        <img src="https://avatars.githubusercontent.com/u/138029781?s=400&u=3ff51622bdb65495c62744b22f84b88692b483e2&v=4" alt="Brand Logo">
-        <h1>UAB Hyperarc Toxicity Calculator</h1>
-        <div class="input-group">
-            <label for="volume">Target Volume</label>
-            <input type="number" id="volume" placeholder="cm3" oninput="updateCalculations()">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12"></div>
+                <h2 class="text-center">UAB Hypercalc</h2>
+                <p class="text-center">Use this tool to predict the probability of toxicity for a given target volume, surface area, largest axial dimension, and equivalent diameter.</p>
+            </div>
         </div>
-        <div class="input-group">
-            <label for="diameter">Target Diameter</label>
-            <input type="text" id="diameter" placeholder="cm">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <!-- Form Section -->
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="volume" placeholder="5.2" oninput="updateCalculations()">
+                        <label for="floatingInput">Target Volume (cc)</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="surfaceArea" placeholder="25.6" oninput="updateSurfaceAreaCalculations()">
+                        <label for="floatingInput">Target Surface Area (cm2)</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="lad" placeholder="1.5" oninput="updateLADCalculations()">
+                        <label for="floatingInput">Largest Axial Dimension (cm)</label>
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="eq-diameter" placeholder="1.5" oninput="updateEqDiameterCalculations()">
+                    <label for="floatingInput">Equivalent Diameter (cm)</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Prediction Table Section -->
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Fractionation</th>
+                            <th>Prediction</th>
+                            <th>Detail</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-table">
+                        <tr>
+                            <td>24Gy x 1</td>
+                            <td id="prediction-24"></td>
+                            <td id="detail-24">Predicted V12 is 0 cc</td>
+                        </tr>
+                        <tr>
+                            <td>20Gy x 1</td>
+                            <td id="prediction-20"></td>
+                            <td id="detail-20">Predicted V12 is 0 cc</td>
+                        </tr>
+                        <tr>
+                            <td>18Gy x 1</td>
+                            <td id="prediction-18"></td>
+                            <td id="detail-18">Predicted V12 is 0 cc</td>
+                        </tr>
+                        <tr>
+                            <td>16Gy x 1</td>
+                            <td id="prediction-16"></td>
+                            <td id="detail-16">Predicted V12 is 0 cc</td>
+                        </tr>
+                        <tr>
+                            <td>15Gy x 1</td>
+                            <td id="prediction-15"></td>
+                            <td id="detail-15">Predicted V12 is 0 cc</td>
+                        </tr>
+                        <tr>
+                            <td>9Gy x 3</td>
+                            <td id="prediction-27"></td>
+                            <td id="detail-27">Predicted V19.6 is 0 cc</td>
+                        </tr>
+                        <tr>
+                            <td>6Gy x 5</td>
+                            <td id="prediction-30"></td>
+                            <td id="detail-30">Predicted V24.4 is 0 cc</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-3">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Color</th>
+                            <th>Grade 1-3 Toxicity Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="circle green"></span></td>
+                            <td>&lt;=3.6 %</td>
+                        </tr>
+                        <tr>
+                            <td><span class="circle yellow-orange"></span></td>
+                            <td>&lt;=4.8 %</td>
+                        </tr>
+                        <tr>
+                            <td><span class="circle orange-red"></span></td>
+                            <td>&lt;=8.6 %</td>
+                        </tr>
+                        <tr>
+                            <td><span class="circle dark-red"></span></td>
+                            <td>&gt;8.6 %</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-
-    <div class="table-container">
-        <table>
-            <thead>
-            <tr>
-                <th>Fractionation</th>
-                <th>Predicted Toxicity</th>
-                <th>Detail</th>
-            </tr>
-            </thead>
-            <tbody id="results-table">
-            <tr>
-                <td>24Gy x 1</td>
-                <td id="toxicity-24"></td>
-                <td id="detail-24">Predicted V12 is 0 cc</td>
-            </tr>
-            <tr>
-                <td>20Gy x 1</td>
-                <td id="toxicity-20"></td>
-                <td id="detail-20">Predicted V12 is 0 cc</td>
-            </tr>
-            <tr>
-                <td>18Gy x 1</td>
-                <td id="toxicity-18"></td>
-                <td id="detail-18">Predicted V12 is 0 cc</td>
-            </tr>
-            <tr>
-                <td>16Gy x 1</td>
-                <td id="toxicity-16"></td>
-                <td id="detail-16">Predicted V12 is 0 cc</td>
-            </tr>
-            <tr>
-                <td>15Gy x 1</td>
-                <td id="toxicity-15"></td>
-                <td id="detail-15">Predicted V12 is 0 cc</td>
-            </tr>
-            <tr>
-                <td>27Gy x 3</td>
-                <td id="toxicity-27"></td>
-                <td id="detail-27">Predicted V19.6 is 0 cc</td>
-            </tr>
-            <tr>
-                <td>30Gy x 5</td>
-                <td id="toxicity-30"></td>
-                <td id="detail-30">Predicted V24.4 is 0 cc</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<script>
-    const fractionationData = [
-        { id: 24, factor: 4.6519, exponent: 0.8431, label: 'V12' },
-        { id: 20, factor: 3.4249, exponent: 0.8672, label: 'V12' },
-        { id: 18, factor: 2.8572, exponent: 0.8825, label: 'V12' },
-        { id: 27, factor: 2.4552, exponent: 0.8960, label: 'V19.6' },
-        { id: 16, factor: 2.3112, exponent: 0.9016, label: 'V12' },
-        { id: 15, factor: 2.0394, exponent: 0.9137, label: 'V12' },
-        { id: 30, factor: 1.9720, exponent: 0.9170, label: 'V24.4' }
-    ];
-
-    function calculateIDV(TV, factor, exponent) {
-        return factor * Math.pow(TV, exponent);
-    }
-
-    function updateCalculations() {
-        const TV = parseFloat(document.getElementById('volume').value);
-
-        if (isNaN(TV) || TV <= 0) {
-            // If Target Volume is not a valid number, clear the table
-            fractionationData.forEach(({ id }) => {
-                document.getElementById(`toxicity-${id}`).textContent = '';
-                document.getElementById(`detail-${id}`).textContent = 'Predicted V12 is 0 cc';
-            });
-            return;
-        }
-
-        fractionationData.forEach(({ id, factor, exponent, label }) => {
-            const IDV = calculateIDV(TV, factor, exponent).toFixed(2);
-            let toxicityLevel = '';
-
-            if (IDV > 20) {
-                toxicityLevel = 'Grade 3';
-            } else if (IDV > 10) {
-                toxicityLevel = 'Grade 2';
-            } else if (IDV > 5) {
-                toxicityLevel = 'Grade 1';
-            } else {
-                toxicityLevel = 'None';
-            }
-
-            document.getElementById(`toxicity-${id}`).textContent = toxicityLevel;
-            document.getElementById(`detail-${id}`).textContent = `Predicted ${label} is ${IDV} cc`;
-        });
-    }
-</script>
-
 </body>
-</html>

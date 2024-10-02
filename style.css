@@ -1,0 +1,27 @@
+.circle {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+
+.green {
+    background-color: #28a745;
+}
+
+.yellow-orange {
+    background-color: #ffc107;
+}
+
+.orange-red {
+    background-color: #fd7e14;
+}
+
+.dark-red {
+    background-color: #dc3545;
+}
+
+/* Key section spacing */
+.key-container {
+    margin-left: 30px;
+}
