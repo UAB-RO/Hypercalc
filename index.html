@@ -3,61 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Calculator</title>
+    <title>UAB Hyperarc Toxicity Calculator</title>
     <style>
-        /* Simple style for the calculator */
-        #calculator {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            width: 200px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ccc;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
         }
-        button, input {
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            background-color: #fff;
             padding: 20px;
-            font-size: 1.5em;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container {
+            margin-right: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        th {
+            background-color: #80aaff;
+            color: #fff;
+        }
+
+        td {
+            background-color: #e6f0ff;
+        }
+
+        .predicted-toxicity-none {
+            background-color: #dff0d8;
+        }
+
+        .predicted-toxicity-grade-1,
+        .predicted-toxicity-grade-2,
+        .predicted-toxicity-grade-3 {
+            background-color: #f2dede;
+        }
+
+        .predicted-toxicity-grade-1 {
+            background-color: #fcf8e3;
+        }
+
+        .predicted-toxicity-grade-2 {
+            background-color: #f7e5c0;
+        }
+
+        .predicted-toxicity-grade-3 {
+            background-color: #f2b8b0;
         }
     </style>
 </head>
 <body>
 
-<div id="calculator">
-    <input type="text" id="result" disabled>
-    <button onclick="clearDisplay()">C</button>
-    <button onclick="appendValue('7')">7</button>
-    <button onclick="appendValue('8')">8</button>
-    <button onclick="appendValue('9')">9</button>
-    <button onclick="appendValue('/')">/</button>
-    <button onclick="appendValue('4')">4</button>
-    <button onclick="appendValue('5')">5</button>
-    <button onclick="appendValue('6')">6</button>
-    <button onclick="appendValue('*')">*</button>
-    <button onclick="appendValue('1')">1</button>
-    <button onclick="appendValue('2')">2</button>
-    <button onclick="appendValue('3')">3</button>
-    <button onclick="appendValue('-')">-</button>
-    <button onclick="appendValue('0')">0</button>
-    <button onclick="appendValue('.')">.</button>
-    <button onclick="calculate()">=</button>
-    <button onclick="appendValue('+')">+</button>
+<div class="container">
+    <div class="form-container">
+        <h1>UAB Hyperarc Toxicity Calculator</h1>
+        <div class="input-group">
+            <label for="volume">Target Volume</label>
+            <input type="text" id="volume" placeholder="cm3">
+        </div>
+        <div class="input-group">
+            <label for="surface-area">Target Surface Area</label>
+            <input type="text" id="surface-area" placeholder="cm2">
+        </div>
+        <div class="input-group">
+            <label for="diameter">Target Diameter</label>
+            <input type="text" id="diameter" placeholder="cm">
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Fractionation</th>
+                <th>Predicted Toxicity</th>
+                <th>Detail</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>24Gy x 1</td>
+                <td class="predicted-toxicity-none">None</td>
+                <td>Predicted V12 is 4.5 cc</td>
+            </tr>
+            <tr>
+                <td>20Gy x 1</td>
+                <td class="predicted-toxicity-grade-1">Grade 1</td>
+                <td>Predicted V12 is 4.5 cc</td>
+            </tr>
+            <tr>
+                <td>18Gy x 1</td>
+                <td class="predicted-toxicity-grade-2">Grade 2</td>
+                <td>Predicted V12 is 4.5 cc</td>
+            </tr>
+            <tr>
+                <td>16Gy x 1</td>
+                <td class="predicted-toxicity-grade-1">Grade 1</td>
+                <td>Predicted V12 is 4.5 cc</td>
+            </tr>
+            <tr>
+                <td>15Gy x 1</td>
+                <td class="predicted-toxicity-none">None</td>
+                <td>Predicted V12 is 4.5 cc</td>
+            </tr>
+            <tr>
+                <td>27Gy x 3</td>
+                <td class="predicted-toxicity-grade-3">Grade 3</td>
+                <td>Predicted V12 is 4.5 cc</td>
+            </tr>
+            <tr>
+                <td>30Gy x 5</td>
+                <td class="predicted-toxicity-grade-1">Grade 1</td>
+                <td>Predicted V24.4 is 5.6 cc</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-
-<script>
-    function appendValue(value) {
-        document.getElementById('result').value += value;
-    }
-
-    function clearDisplay() {
-        document.getElementById('result').value = '';
-    }
-
-    function calculate() {
-        let result = eval(document.getElementById('result').value);
-        document.getElementById('result').value = result;
-    }
-</script>
 
 </body>
 </html>
