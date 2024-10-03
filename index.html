@@ -13,37 +13,42 @@
         <!-- Title Section -->
         <div class="row">
             <div class="col-12">
-                <h2 class="text-center">UAB Hypercalc</h2>
-                <p class="text-center">Use this tool to predict the probability of toxicity for a given target volume, surface area, largest axial dimension, and equivalent diameter.</p>
+                <h2 class="text-center mt-3">UAB Hypercalc</h2>
+                <p class="text-center">Use this tool to predict the probability of toxicity for a given target volume,
+                    surface area, largest axial dimension, and equivalent diameter.</p>
             </div>
         </div>
 
         <!-- Form and Prediction Table Section -->
         <div class="row">
             <!-- Form Section -->
-            <div class="col-12 col-lg-4 mb-3 p-3 text-center text-lg-start">
+            <div class="col-12 col-lg-3 mb-3 p-3 text-center text-lg-start">
                 <div class="mb-3">
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="volume" placeholder="5.2" oninput="updateCalculations()">
+                        <input type="number" class="form-control" id="volume" placeholder="5.2"
+                            oninput="updateCalculations()">
                         <label for="volume">Target Volume (cc)</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="surfaceArea" placeholder="25.6" oninput="updateSurfaceAreaCalculations()">
+                        <input type="number" class="form-control" id="surfaceArea" placeholder="25.6"
+                            oninput="updateSurfaceAreaCalculations()">
                         <label for="surfaceArea">Target Surface Area (cm²)</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="lad" placeholder="1.5" oninput="updateLADCalculations()">
+                        <input type="number" class="form-control" id="lad" placeholder="1.5"
+                            oninput="updateLADCalculations()">
                         <label for="lad">Largest Axial Dimension (cm)</label>
                     </div>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="eq-diameter" placeholder="1.5" oninput="updateEqDiameterCalculations()">
+                    <input type="number" class="form-control" id="eq-diameter" placeholder="1.5"
+                        oninput="updateEqDiameterCalculations()">
                     <label for="eq-diameter">Equivalent Diameter (cm)</label>
                 </div>
             </div>
 
             <!-- Prediction Table Section -->
-            <div class="col-12 col-lg-4 mb-3 p-3 text-center text-lg-start">
+            <div class="col-12 col-lg-6 mb-3 p-3 text-center text-lg-start">
                 <table class="table table-bordered table-hover">
                     <thead class="table-dark">
                         <tr>
@@ -93,7 +98,7 @@
             </div>
 
             <!-- Key Section -->
-            <div class="col-12 col-lg-4 mb-3 p-3 text-center text-lg-start">
+            <div class="col-12 col-lg-3 mb-3 p-3 text-center text-lg-start">
                 <table class="table table-bordered">
                     <thead class="table-dark">
                         <tr>
@@ -122,5 +127,15 @@
                 </table>
             </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-12 text-center alert alert-info" role="alert">
+                <p>Model calculates the dosimetry for individual target metrics (not plan metrics) and was not trained on data with significant dosimetric bridging</p>
+            </div>
+            <div class="col-12 text-center alert alert-dark" role="alert">
+                <p>Data is based on AAPM <a href="https://www.aapm.org/pubs/hytec/detail.asp?docid=20"
+                        target="_blank">HyTEC 2106</a>. Toxicity estimates are based on HyTEC models and that actual
+                    risk may be altered by other factors including tumor location, PTV definitions, systemic therapy,
+                    and individual genetic susceptibility.</p>
+            </div>
+        </div>
 </body>
